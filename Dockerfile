@@ -20,10 +20,19 @@ COPY src ./src
 RUN mvn package -DskipTests
 
 # Configuracion de variables de entorno para instrumentacion automatica de app
-ENV JAVA_TOOL_OPTIONS=-javaagent:lib/opentelemetry-javaagent.jar
-ENV OTEL_TRACES_EXPORTER=logging
+ENV JAVA_TOOL_OPTIONS=-javaagent:lib/opentelemetry-javaagent-all.jar
+
+ENV OTEL_SERVICE_NAME=app-service
+ENV OTEL_TRACES_EXPORTER=jaeger
+ENV OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger:14250
+
 ENV OTEL_METRICS_EXPORTER=logging
 ENV OTEL_LOGS_EXPORTER=logging
+
+# ENV OTEL_TRACES_EXPORTER=logging
+# ENV OTEL_METRICS_EXPORTER=logging
+# ENV OTEL_LOGS_EXPORTER=logging
+
 ENV OTEL_METRIC_EXPORT_INTERVAL=15000
 
 # Expone el puerto 8080 en el contenedor
